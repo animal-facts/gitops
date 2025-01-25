@@ -16,19 +16,39 @@ spec:
       labels:
         app: postgres
     spec:
+      initContainers:
+        - name: migrate
+          image: postgres:13
+          command: ["sh", "-c"]
+          args:
+            [
+              "for file in $(ls /migrations/*.sql | sort); do echo Running migration: $file; psql -U $POSTGRES_USER -d $POSTGRES_DB -f $file; done"
+            ]
+          envFrom:
+            - secretRef:
+                name: postgres-secrets
+          volumeMounts:
+            - name: migrations
+              mountPath: /migrations
       containers:
         - name: postgres
           image: postgres:13
           ports:
             - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: postgres-secrets
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
-          envFrom:
-            - configMapRef:
-                name: postgres-config
-            - secretRef:
-                name: postgres-secrets
+      volumes:
+        - name: migrations
+          gitRepo:
+            repository: https://github.com/its-haze/animal-api-gitops
+            directory: migrations
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
   volumeClaimTemplates:
     - metadata:
         name: postgres-data

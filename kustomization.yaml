@@ -4,3 +4,5 @@ resources:
   - postgres/configmap.yaml
   - postgres/secret.yaml
   - postgres/job-migrate.yaml
+
+namespace: animal-api
