@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-config
+  namespace: animal-api
 data:
   POSTGRES_DATABASE: animaldb
   POSTGRES_USER: admin
