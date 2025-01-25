@@ -45,6 +45,7 @@ spec:
         - name: migrations
           gitRepo:
             repository: https://github.com/its-haze/animal-api-gitops
+            revision: master
             directory: migrations
         - name: postgres-data
           persistentVolumeClaim:
