@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- secret.yaml
+- service.yaml
+- statefulset.yaml
+- flyway-migrations.yaml
+
+configMapGenerator:
+- name: postgres-migrations
+  files:
+  - migrations/V1__init.sql
