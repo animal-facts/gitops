@@ -15,16 +15,16 @@ spec:
         command: ["flyway", "-baselineOnMigrate=true", "migrate"]
         env:
         - name: FLYWAY_URL
-          value: jdbc:postgresql://postgres:5432/$(POSTGRES_DB)
+          value: jdbc:postgresql://postgres:5432/$(POSTGRES_DATABASE)
         - name: FLYWAY_USER
           valueFrom:
             secretKeyRef:
-              name: postgres-secret
+              name: postgres-secrets
               key: POSTGRES_USER
         - name: FLYWAY_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: postgres-secret
+              name: postgres-secrets
               key: POSTGRES_PASSWORD
         volumeMounts:
         - name: migrations
