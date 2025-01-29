@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: flyway
-        image: flyway/flyway:9-alpine
+        image: flyway/flyway:9.20.0-alpine
         command: ["flyway", "-baselineOnMigrate=true", "migrate"]
         env:
         - name: FLYWAY_URL
