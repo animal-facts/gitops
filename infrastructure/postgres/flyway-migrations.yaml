@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-migrations
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/hook: Sync
+spec:
+  template:
+    spec:
+      containers:
+      - name: flyway
+        image: flyway/flyway:9-alpine
+        command: ["flyway", "-baselineOnMigrate=true", "migrate"]
+        env:
+        - name: FLYWAY_URL
+          value: jdbc:postgresql://postgres:5432/$(POSTGRES_DB)
+        - name: FLYWAY_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_USER
+        - name: FLYWAY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+        volumeMounts:
+        - name: migrations
+          mountPath: /flyway/sql
+      volumes:
+      - name: migrations
+        configMap:
+          name: postgres-migrations
+      restartPolicy: Never
+  backoffLimit: 1
