@@ -4,7 +4,7 @@ metadata:
   name: postgres-migrations
   namespace: animal-api
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/hook: Sync
 spec:
   template:
@@ -16,6 +16,11 @@ spec:
         env:
         - name: FLYWAY_URL
           value: jdbc:postgresql://postgres:5432/$(POSTGRES_DATABASE)
+        - name: POSTGRES_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_DATABASE
         - name: FLYWAY_USER
           valueFrom:
             secretKeyRef:
