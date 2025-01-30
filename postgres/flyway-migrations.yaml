@@ -16,9 +16,11 @@ spec:
         args:
           - |
             echo "Waiting for PostgreSQL to be ready..."
-            while ! nc -z postgres 5432; do
-              sleep 1
+            while ! pg_isready -h postgres -p 5432 -U $(POSTGRES_USER) -d $(POSTGRES_DB); do
+              echo "PostgreSQL is not ready yet. Retrying in 5 seconds..."
+              sleep 5
             done
+            echo "PostgreSQL is ready. Running migrations..."
             flyway -baselineOnMigrate=true migrate -url=jdbc:postgresql://postgres:5432/$(POSTGRES_DB) -user=$(POSTGRES_USER) -password=$(POSTGRES_PASSWORD)
         envFrom:
           - secretRef:
