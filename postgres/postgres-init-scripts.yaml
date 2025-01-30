@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-scripts
+  namespace: animal-api
+data:
+  init.sh: |
+    #!/bin/sh
+    set -e
+
+    # Read environment variables
+    DB_NAME="${POSTGRES_DB}"
+    DB_USER="${POSTGRES_USER}"
+
+    # Generate SQL commands
+    echo "Creating database ${DB_NAME} and granting privileges to ${DB_USER}..."
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+      CREATE DATABASE ${DB_NAME};
+      GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};
+    EOSQL
