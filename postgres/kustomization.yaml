@@ -11,4 +11,4 @@ resources:
 configMapGenerator:
 - name: postgres-migrations
   files:
-  - migrations/V1__init.sql
+  - migrations/V1__create_base_data.sql
