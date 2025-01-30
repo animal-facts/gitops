@@ -11,18 +11,13 @@ spec:
     spec:
       containers:
       - name: flyway
-        image: flyway/flyway@sha256:6f913eb7df2cfc1c51c93034c6e6eae35ab0cd8dd1c3d0cdd11b9f6c1cf64cc1 # 9.22.0 arm/v7
-        command: ["flyway", "-baselineOnMigrate=true", "migrate"]
+        image: flyway/flyway@sha256:6f913eb7df2cfc1c51c93034c6e6eae35ab0cd8dd1c3d0cdd11b9f6c1cf64cc1
+        command: ["sh", "-c"]
+        args:
+          - flyway -baselineOnMigrate=true migrate -url=jdbc:postgresql://postgres:5432/$(POSTGRES_DB) -user=$(POSTGRES_USER) -password=$(POSTGRES_PASSWORD)
         envFrom:
-            - secretRef:
-                name: postgres-secrets
-        env:
-        - name: FLYWAY_URL
-          value: jdbc:postgresql://postgres:5432/$(POSTGRES_DB)
-        - name: FLYWAY_USER
-          value: $(POSTGRES_USER)
-        - name: FLYWAY_PASSWORD
-          value: $(POSTGRES_PASSWORD)
+          - secretRef:
+              name: postgres-secrets
         volumeMounts:
         - name: migrations
           mountPath: /flyway/sql
