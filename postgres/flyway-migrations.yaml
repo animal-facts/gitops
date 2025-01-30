@@ -18,7 +18,7 @@ spec:
                 name: postgres-secrets
         env:
         - name: FLYWAY_URL
-          value: jdbc:postgresql://postgres:5432/$(POSTGRES_DATABASE)
+          value: jdbc:postgresql://postgres:5432/$(POSTGRES_DB)
         - name: FLYWAY_USER
           value: $(POSTGRES_USER)
         - name: FLYWAY_PASSWORD
