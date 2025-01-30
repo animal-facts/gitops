@@ -14,8 +14,8 @@ spec:
         image: flyway/flyway@sha256:6f913eb7df2cfc1c51c93034c6e6eae35ab0cd8dd1c3d0cdd11b9f6c1cf64cc1 # 9.22.0 arm/v7
         command: ["flyway", "-baselineOnMigrate=true", "migrate"]
         envFrom:
-          - secretRef:
-            name: postgres-secrets
+            - secretRef:
+                name: postgres-secrets
         env:
         - name: FLYWAY_URL
           value: jdbc:postgresql://postgres:5432/$(POSTGRES_DATABASE)
