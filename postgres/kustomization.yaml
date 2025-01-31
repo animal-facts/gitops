@@ -7,8 +7,3 @@ resources:
 - statefulset.yaml
 - postgres-init-scripts.yaml
 - flyway-migrations.yaml
-
-configMapGenerator:
-- name: postgres-migrations
-  files:
-  - migrations/V1__create_base_data.sql
