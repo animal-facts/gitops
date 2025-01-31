@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: flyway
-        image: itshaze/animal_db_migration:v0.0.1
+        image: itshaze/animal_db_migration:v0.0.2
         command: ["sh", "-c"]
         args:
           - |
