@@ -5,5 +5,4 @@ resources:
 - secret.yaml
 - service.yaml
 - statefulset.yaml
-- postgres-init-scripts.yaml
 - flyway-migrations.yaml
