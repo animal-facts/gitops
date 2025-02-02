@@ -30,13 +30,13 @@ spec:
             name: postgres-secrets  # 🔹 Uses existing PostgreSQL secrets
         livenessProbe:
           httpGet:
-            path: /health  # 🔹 Ensure your API has a /health endpoint
+            path: /facts/random  # 🔹 Ensure your API has a /health endpoint
             port: 8000
           initialDelaySeconds: 5
           periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /health
+            path: /facts/random
             port: 8000
           initialDelaySeconds: 5
           periodSeconds: 10
