@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: animal-api
+  namespace: animal-api
+  labels:
+    app: animal-api
+  annotations:
+    argocd.argoproj.io/sync-wave: "2" # Starts after flyway migrations.
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: animal-api
+  template:
+    metadata:
+      labels:
+        app: animal-api
+    spec:
+      containers:
+      - name: animal-api
+        image: ghcr.io/animal-facts/animal-api:latest  # 🔹 Uses latest for Dev/Test
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: api-config
+        - secretRef:
+            name: postgres-secrets  # 🔹 Uses existing PostgreSQL secrets
+        livenessProbe:
+          httpGet:
+            path: /health  # 🔹 Ensure your API has a /health endpoint
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:  # 🔹 Add resource limits & requests
+          requests:
+            cpu: "250m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
