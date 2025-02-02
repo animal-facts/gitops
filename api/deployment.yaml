@@ -28,19 +28,13 @@ spec:
             name: api-config
         - secretRef:
             name: postgres-secrets  # 🔹 Uses existing PostgreSQL secrets
-        livenessProbe:
-          httpGet:
-            path: /facts/random  # 🔹 Ensure your API has a /health endpoint
-            port: 8000
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        readinessProbe:
+        readinessProbe: # Ensure it is ready to serve api calls.
           httpGet:
             path: /facts/random
             port: 8000
           initialDelaySeconds: 5
           periodSeconds: 10
-        resources:  # 🔹 Add resource limits & requests
+        resources:
           requests:
             cpu: "250m"
             memory: "128Mi"
